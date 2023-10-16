@@ -16,12 +16,17 @@
 #page-icon {
   width: 50px;
   left: 20%;
+  margin-right: 20cm;
 }
 
 #title {
   font-style: normal;
   font-family:Verdana, Geneva, Tahoma, sans-serif;
   font-size: xx-large;
+  margin-right: 20cm;
+  position:a;
+  top: 0;
+  right: 0;
 }
 
 #white-space {
@@ -31,4 +36,12 @@
 
 #page-header {
   padding-bottom: 1%;
+}
+
+#create-button {
+  margin-left: 1%;
+}
+
+#list-button {
+  margin-left: 85%;
 }

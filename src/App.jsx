@@ -1,16 +1,41 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 import pageIcon from './assets/clapperboard.png'
 
 import './App.css'
 
 function App() {
+
+  const baseUrl = "https://localhost:7126/api/Movies"
+  const [data, setData] = useState([]);
+
+  // Get Data
+  const requestGet = async () => {
+    await axios.get(baseUrl)
+      .then(response => {
+        setData(response.data.data) // Data.data
+      }).catch(error => {
+        alert(error);
+      })
+  }
+
+  useEffect(() => {
+    requestGet();
+  }, []);
+
+  console.log(data);
+
   return (
     <>
       <header id="page-header">
-        <a href="https://www.flaticon.com/free-icons/cinema" title="cinema icons">
-          <img id="page-icon" src={pageIcon} />
-        </a>
-        <span id='title' >&nbsp;Films</span>
+        <span id='title'>&nbsp;Films &nbsp;
+          <a href="https://www.flaticon.com/free-icons/cinema" title="cinema icons">
+            <img id="page-icon" src={pageIcon} />
+          </a>
+        </span>
+        <button id='list-button' className='btn btn-primary'>List All</button>
+        <button id='create-button' className='btn btn-success'>Create</button>
       </header>
 
       <p id="film-poster" float="left">
@@ -19,7 +44,28 @@ function App() {
         <img src="https://m.media-amazon.com/images/I/51Suhr1p+VL._AC_UF894,1000_QL80_.jpg" width="200" height="auto" /> <span>&nbsp;</span>
         <img src="https://m.media-amazon.com/images/I/81UOBSDQh0L._AC_UF894,1000_QL80_.jpg" width="200" height="auto" />
       </p>
-      <h1 id='white-space'></h1>
+      {/* <h1 id='white-space'></h1> */}
+
+      <table className='table table-light table-bordered'>
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Is in cinema?</th>
+            <th>Release date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data.map((film, index) => (
+            <tr key={index}>
+              <td>{film.movieId}</td>
+              <td>{film.title}</td>
+              <td>{film.isInCinema ? 'Yes' : 'No'}</td>
+              <td>{new Date(film.releaseDate).toLocaleDateString('pt-br')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   )
 }
