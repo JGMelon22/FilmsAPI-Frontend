@@ -4,3 +4,12 @@
   padding: 2rem;
   text-align: center;
 }
+
+#title {
+  font-size: xx-large;
+  padding-bottom: 5%;
+}
+
+#film-poster {
+  padding-bottom: 55%;
+}
