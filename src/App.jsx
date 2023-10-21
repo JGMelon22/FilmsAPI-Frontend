@@ -9,14 +9,14 @@ function App() {
 
   const baseUrl = "https://localhost:7126/api/Movies"
   const [data, setData] = useState([]);
-
+ 
   // Get Data
   const requestGet = async () => {
     await axios.get(baseUrl)
       .then(response => {
         setData(response.data.data) // Data.data
       }).catch(error => {
-        alert(error);
+        alert(error.get);
       })
   }
 
@@ -65,6 +65,40 @@ function App() {
           ))}
         </tbody>
       </table>
+
+      {/* Include new Movie */}
+      <Modal>
+        <ModalHeader>Register a new movie</ModalHeader>
+        <ModalBody>
+          <div className='form-group'>
+            <label>Title</label>
+            <br />
+            <input type='text' className='form-control'></input>
+            <br />
+            <label>Is In Cinema?</label>
+            <br />
+            <input type='checkbox' className='form-check-input'></input>
+            <br />
+            <label>Release Date</label>
+            <br />
+            <input type='date'></input>
+            <label>Genre</label>
+            <br />
+            <input type='text' className='form-control'></input>
+            <label>Actor Id</label>
+            <br />
+            <input type='number' className='form-control'></input>
+            <label>Character</label>
+            <br />
+            <input type='text' className='form-control'></input>
+            <br />
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <button className='btn btn-success'>Include</button> {" "}
+          <button className='btn btn-danger'>Cancel</button>
+        </ModalFooter>
+      </Modal>
     </>
   )
 }
