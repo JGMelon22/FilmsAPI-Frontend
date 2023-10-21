@@ -20,11 +20,11 @@ function App() {
       })
   }
 
+  console.log(typeof requestGet);
+
   useEffect(() => {
     requestGet();
   }, []);
-
-  console.log(data);
 
   return (
     <>
@@ -44,9 +44,10 @@ function App() {
         <img src="https://m.media-amazon.com/images/I/51Suhr1p+VL._AC_UF894,1000_QL80_.jpg" width="200" height="auto" /> <span>&nbsp;</span>
         <img src="https://m.media-amazon.com/images/I/81UOBSDQh0L._AC_UF894,1000_QL80_.jpg" width="200" height="auto" />
       </p>
-      {/* <h1 id='white-space'></h1> */}
 
-      <table className='table table-light table-bordered'>
+      <h2 id='white-space'></h2>
+
+      <table className='table table-light table-hover table-bordered'>
         <thead>
           <tr>
             <th>Id</th>
