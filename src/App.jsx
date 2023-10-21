@@ -9,7 +9,27 @@ function App() {
 
   const baseUrl = "https://localhost:7126/api/Movies"
   const [data, setData] = useState([]);
- 
+  const [selectedMovie, setSelectedMovie] = useState(
+    {
+      movieId: '',
+      title: '',
+      isInCinema: 0,
+      releaseDate: '',
+      genreName: '',
+      actorId: 0,
+      character: ''
+    })
+
+  // Modal window input data
+  const handleChange = e => {
+    const { name, value, type, checked } = e.target;
+    setSelectedMovie({
+      ...selectedMovie,
+      [name]: type === 'checkbox' ? (checked ? 1 : 0) : value
+    });
+    console.log(selectedMovie);
+  }
+
   // Get Data
   const requestGet = async () => {
     await axios.get(baseUrl)
@@ -73,24 +93,24 @@ function App() {
           <div className='form-group'>
             <label>Title</label>
             <br />
-            <input type='text' className='form-control'></input>
+            <input type='text' className='form-control' name='title' onChange={handleChange}></input>
             <br />
             <label>Is In Cinema?</label>
             <br />
-            <input type='checkbox' className='form-check-input'></input>
+            <input type='checkbox' className='form-check-input' name='isInCinema' onChange={handleChange}></input>
             <br />
             <label>Release Date</label>
             <br />
-            <input type='date'></input>
+            <input type='date' name='releaseDate' onChange={handleChange}></input>
             <label>Genre</label>
             <br />
             <input type='text' className='form-control'></input>
             <label>Actor Id</label>
             <br />
-            <input type='number' className='form-control'></input>
+            <input type='number' className='form-control' name='actorId' onChange={handleChange}></input>
             <label>Character</label>
             <br />
-            <input type='text' className='form-control'></input>
+            <input type='text' className='form-control' name='character' onChange={handleChange}></input>
             <br />
           </div>
         </ModalBody>
