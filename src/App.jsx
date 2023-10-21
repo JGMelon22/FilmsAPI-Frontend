@@ -18,7 +18,7 @@ function App() {
       title: '',
       isInCinema: 0,
       releaseDate: '',
-      genreName: '',
+      genre: 0,
       actorId: 0,
       character: ''
     })
@@ -43,6 +43,21 @@ function App() {
     await axios.get(baseUrl)
       .then(response => {
         setData(response.data.data) // Data.data
+      }).catch(error => {
+        alert(error.get);
+      })
+  }
+
+  // Post Data
+  const requestPost = async () => {
+    delete selectedMovie.movieId;
+    selectedMovie.genre = parseInt(selectedMovie.genre);
+    selectedMovie.actorId = parseInt(selectedMovie.actorId);
+    selectedMovie.isInCinema = selectedMovie.isInCinema ? true : false;
+    await axios.post(baseUrl, selectedMovie)
+      .then(response => {
+        setData(data.concat(response.data));
+        openCloseIncludeModal();
       }).catch(error => {
         alert(error.get);
       })
@@ -110,12 +125,12 @@ function App() {
             <br />
             <input type='date' name='releaseDate' onChange={handleChange}></input>
             <br />
-            <label>Genre</label>
+            <label>Genre Code</label>
             <br />
-            <input type='text' className='form-control'></input>
+            <input type='number' min='1' className='form-control'></input>
             <label>Actor Id</label>
             <br />
-            <input type='number' className='form-control' name='actorId' onChange={handleChange}></input>
+            <input type='number' min='1' className='form-control' name='actorId' onChange={handleChange}></input>
             <label>Character</label>
             <br />
             <input type='text' className='form-control' name='character' onChange={handleChange}></input>
@@ -123,7 +138,7 @@ function App() {
           </div>
         </ModalBody>
         <ModalFooter>
-          <button className='btn btn-success'>Include</button> {" "}
+          <button className='btn btn-success' onClick={() => requestPost()}>Include</button> {" "}
           <button className='btn btn-danger' onClick={() => openCloseIncludeModal()} >Cancel</button>
         </ModalFooter>
       </Modal>
