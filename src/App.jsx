@@ -20,8 +20,6 @@ function App() {
       })
   }
 
-  console.log(typeof requestGet);
-
   useEffect(() => {
     requestGet();
   }, []);
