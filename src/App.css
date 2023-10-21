@@ -39,9 +39,6 @@
 }
 
 #create-button {
-  margin-left: 1%;
-}
-
-#list-button {
-  margin-left: 85%;
+  margin-left: 87%;
+  width: 150px;
 }

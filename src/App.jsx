@@ -51,9 +51,9 @@ function App() {
   // Post Data
   const requestPost = async () => {
     delete selectedMovie.movieId;
-    selectedMovie.genre = parseInt(selectedMovie.genre);
+    selectedMovie.genre = parseInt(selectedMovie.genre); 
     selectedMovie.actorId = parseInt(selectedMovie.actorId);
-    selectedMovie.isInCinema = selectedMovie.isInCinema ? true : false;
+    selectedMovie.isInCinema = selectedMovie.isInCinema ? true : false; // Cast due to checkbox type
     await axios.post(baseUrl, selectedMovie)
       .then(response => {
         setData(data.concat(response.data));
@@ -75,7 +75,6 @@ function App() {
             <img id="page-icon" src={pageIcon} />
           </a>
         </span>
-        <button id='list-button' className='btn btn-primary'>List All</button>
         <button id='create-button' className='btn btn-success' onClick={() => openCloseIncludeModal()}>Create</button>
       </header>
 
@@ -88,13 +87,14 @@ function App() {
 
       <h2 id='white-space'></h2>
 
-      <table className='table table-light table-hover table-bordered'>
+      <table className='table table-secondary table-hover table-bordered'>
         <thead>
           <tr>
             <th>Id</th>
             <th>Title</th>
             <th>Is in cinema?</th>
             <th>Release date</th>
+            <th  className='ont-weight-bold'>Options</th>
           </tr>
         </thead>
         <tbody>
@@ -104,8 +104,13 @@ function App() {
               <td>{film.title}</td>
               <td>{film.isInCinema ? 'Yes' : 'No'}</td>
               <td>{new Date(film.releaseDate).toLocaleDateString('pt-br')}</td>
+              <td className='text-center'>
+                <button className='btn btn-info'>Edit</button> {" "}
+                <button className='btn btn-danger'>Delete</button>
+              </td>
             </tr>
           ))}
+
         </tbody>
       </table>
 
@@ -139,7 +144,7 @@ function App() {
         </ModalBody>
         <ModalFooter>
           <button className='btn btn-success' onClick={() => requestPost()}>Include</button> {" "}
-          <button className='btn btn-danger' onClick={() => openCloseIncludeModal()} >Cancel</button>
+          <button className='btn btn-warning' onClick={() => openCloseIncludeModal()} >Cancel</button>
         </ModalFooter>
       </Modal>
     </>
