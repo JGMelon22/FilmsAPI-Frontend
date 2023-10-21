@@ -9,6 +9,9 @@ function App() {
 
   const baseUrl = "https://localhost:7126/api/Movies"
   const [data, setData] = useState([]);
+  const [includeModal, setIncludeModal] = useState(false);
+
+  // Bind input user data from modal window
   const [selectedMovie, setSelectedMovie] = useState(
     {
       movieId: '',
@@ -19,6 +22,11 @@ function App() {
       actorId: 0,
       character: ''
     })
+
+  // Handles open/close modal logic
+  const openCloseIncludeModal = () => {
+    setIncludeModal(!includeModal);
+  }
 
   // Modal window input data
   const handleChange = e => {
@@ -53,7 +61,7 @@ function App() {
           </a>
         </span>
         <button id='list-button' className='btn btn-primary'>List All</button>
-        <button id='create-button' className='btn btn-success'>Create</button>
+        <button id='create-button' className='btn btn-success' onClick={() => openCloseIncludeModal()}>Create</button>
       </header>
 
       <p id="film-poster" float="left">
@@ -87,14 +95,13 @@ function App() {
       </table>
 
       {/* Include new Movie */}
-      <Modal>
+      <Modal isOpen={includeModal}>
         <ModalHeader>Register a new movie</ModalHeader>
         <ModalBody>
           <div className='form-group'>
             <label>Title</label>
             <br />
             <input type='text' className='form-control' name='title' onChange={handleChange}></input>
-            <br />
             <label>Is In Cinema?</label>
             <br />
             <input type='checkbox' className='form-check-input' name='isInCinema' onChange={handleChange}></input>
@@ -102,6 +109,7 @@ function App() {
             <label>Release Date</label>
             <br />
             <input type='date' name='releaseDate' onChange={handleChange}></input>
+            <br />
             <label>Genre</label>
             <br />
             <input type='text' className='form-control'></input>
@@ -116,7 +124,7 @@ function App() {
         </ModalBody>
         <ModalFooter>
           <button className='btn btn-success'>Include</button> {" "}
-          <button className='btn btn-danger'>Cancel</button>
+          <button className='btn btn-danger' onClick={() => openCloseIncludeModal()} >Cancel</button>
         </ModalFooter>
       </Modal>
     </>
