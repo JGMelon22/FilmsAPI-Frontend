@@ -10,6 +10,7 @@ function App() {
   const baseUrl = "https://localhost:7126/api/Movies"
   const [data, setData] = useState([]);
   const [includeModal, setIncludeModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
 
   // Bind input user data from modal window
   const [selectedMovie, setSelectedMovie] = useState(
@@ -26,6 +27,10 @@ function App() {
   // Handles open/close modal logic
   const openCloseIncludeModal = () => {
     setIncludeModal(!includeModal);
+  }
+
+  const openCloseEditModal = () => {
+    setEditModal(!editModal);
   }
 
   // Modal window input data
@@ -51,7 +56,7 @@ function App() {
   // Post Data
   const requestPost = async () => {
     delete selectedMovie.movieId;
-    selectedMovie.genre = parseInt(selectedMovie.genre); 
+    selectedMovie.genre = parseInt(selectedMovie.genre);
     selectedMovie.actorId = parseInt(selectedMovie.actorId);
     selectedMovie.isInCinema = selectedMovie.isInCinema ? true : false; // Cast due to checkbox type
     await axios.post(baseUrl, selectedMovie)
@@ -94,7 +99,7 @@ function App() {
             <th>Title</th>
             <th>Is in cinema?</th>
             <th>Release date</th>
-            <th  className='ont-weight-bold'>Options</th>
+            <th className='ont-weight-bold'>Options</th>
           </tr>
         </thead>
         <tbody>
@@ -105,7 +110,7 @@ function App() {
               <td>{film.isInCinema ? 'Yes' : 'No'}</td>
               <td>{new Date(film.releaseDate).toLocaleDateString('pt-br')}</td>
               <td className='text-center'>
-                <button className='btn btn-info'>Edit</button> {" "}
+                <button className='btn btn-info' onClick={() => openCloseEditModal()}>Edit</button> {" "}
                 <button className='btn btn-danger'>Delete</button>
               </td>
             </tr>
@@ -145,6 +150,30 @@ function App() {
         <ModalFooter>
           <button className='btn btn-success' onClick={() => requestPost()}>Include</button> {" "}
           <button className='btn btn-warning' onClick={() => openCloseIncludeModal()} >Cancel</button>
+        </ModalFooter>
+      </Modal>
+
+      {/* Update Movie Info */}
+      <Modal isOpen={editModal}>
+        <ModalHeader>Register a new movie</ModalHeader>
+        <ModalBody>
+          <div className='form-group'>
+            <label>Title</label>
+            <br />
+            <input type='text' className='form-control' name='title' onChange={handleChange}></input>
+            <label>Is In Cinema?</label>
+            <br />
+            <input type='checkbox' className='form-check-input' name='isInCinema' onChange={handleChange}></input>
+            <br />
+            <label>Release Date</label>
+            <br />
+            <input type='date' name='releaseDate' onChange={handleChange}></input>
+            <br />
+          </div>
+        </ModalBody>
+        <ModalFooter>
+          <button className='btn btn-primary'>Edit</button> {" "}
+          <button className='btn btn-warning' onClick={() => openCloseEditModal()}>Cancel</button>
         </ModalFooter>
       </Modal>
     </>
