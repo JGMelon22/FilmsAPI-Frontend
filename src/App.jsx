@@ -40,7 +40,13 @@ function App() {
       ...selectedMovie,
       [name]: type === 'checkbox' ? (checked ? 1 : 0) : value
     });
-    console.log(selectedMovie);
+  }
+
+  // Logic to call edit or delete modal window
+  const selectMovie = (film, option) => {
+    setSelectedMovie(film);
+    option === "Edit" &&
+      openCloseEditModal();
   }
 
   // Get Data
@@ -66,6 +72,25 @@ function App() {
       }).catch(error => {
         alert(error.get);
       })
+  }
+
+  const requestPut = async () => {
+    selectMovie.isInCinema = selectedMovie.isInCinema ? true : false; // Cast due to checkbox type
+    await axios.put(baseUrl + "/", selectMovie)
+      .then(response => {
+        var answer = response.data;
+        var auxiliaryData = data;
+        auxiliaryData.map(film => {
+          if (film.id === answer.movieId) {
+            film.title = answer.title;
+            film.isInCinema = answer.isInCinema;
+            film.releaseDate = answer.releaseDate;
+          }
+        });
+        openCloseEditModal();
+      }).catch(error => {
+        alert(error)
+      });
   }
 
   useEffect(() => {
@@ -110,12 +135,11 @@ function App() {
               <td>{film.isInCinema ? 'Yes' : 'No'}</td>
               <td>{new Date(film.releaseDate).toLocaleDateString('pt-br')}</td>
               <td className='text-center'>
-                <button className='btn btn-info' onClick={() => openCloseEditModal()}>Edit</button> {" "}
-                <button className='btn btn-danger'>Delete</button>
+                <button className='btn btn-info' onClick={() => selectMovie(film, "Edit")}>Edit</button> {" "}
+                <button className='btn btn-danger' onClick={() => selectMovie(film, "Delete")}>Delete</button>
               </td>
             </tr>
           ))}
-
         </tbody>
       </table>
 
@@ -158,21 +182,25 @@ function App() {
         <ModalHeader>Register a new movie</ModalHeader>
         <ModalBody>
           <div className='form-group'>
-            <label>Title</label>
+            <label>Id:</label>
             <br />
-            <input type='text' className='form-control' name='title' onChange={handleChange}></input>
+            <input readOnly value={selectedMovie && selectedMovie.movieId}></input>
+            <br />
+            <label>Title: </label>
+            <br />
+            <input type='text' className='form-control' name='title' onChange={handleChange} value={selectedMovie && selectedMovie.title} />
             <label>Is In Cinema?</label>
             <br />
-            <input type='checkbox' className='form-check-input' name='isInCinema' onChange={handleChange}></input>
+            <input type='checkbox' className='form-check-input' name='isInCinema' onChange={handleChange} value={selectedMovie && selectedMovie.isInCinema} />
             <br />
-            <label>Release Date</label>
+            <label>Release Date:</label>
             <br />
-            <input type='date' name='releaseDate' onChange={handleChange}></input>
+            <input type='date' name='releaseDate' onChange={handleChange} value={selectedMovie && selectedMovie.releaseDate} />
             <br />
           </div>
         </ModalBody>
         <ModalFooter>
-          <button className='btn btn-primary'>Edit</button> {" "}
+          <button className='btn btn-primary' onClick={() => requestPut()}>Edit</button> {" "}
           <button className='btn btn-warning' onClick={() => openCloseEditModal()}>Cancel</button>
         </ModalFooter>
       </Modal>
