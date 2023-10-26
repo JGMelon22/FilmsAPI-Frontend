@@ -76,16 +76,19 @@ function App() {
 
   const requestPut = async () => {
     selectMovie.isInCinema = selectedMovie.isInCinema ? true : false; // Cast due to checkbox type
-    await axios.put(baseUrl + "/", selectMovie)
+
+    await axios.put(baseUrl, selectedMovie)
       .then(response => {
         var answer = response.data;
         var auxiliaryData = data;
-        auxiliaryData.map(film => {
+
+        auxiliaryData.forEach(film => {
           if (film.id === answer.movieId) {
             film.title = answer.title;
             film.isInCinema = answer.isInCinema;
             film.releaseDate = answer.releaseDate;
           }
+
         });
         openCloseEditModal();
       }).catch(error => {
