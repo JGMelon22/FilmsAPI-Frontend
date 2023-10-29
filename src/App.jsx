@@ -11,6 +11,7 @@ function App() {
   const [data, setData] = useState([]);
   const [includeModal, setIncludeModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
   // Bind input user data from modal window
   const [selectedMovie, setSelectedMovie] = useState(
@@ -33,7 +34,11 @@ function App() {
     setEditModal(!editModal);
   }
 
-  // Modal window input data
+  const openCloseDeleteModal = () => {
+    setDeleteModal(!deleteModal)
+  }
+
+  // Input data
   const handleChange = e => {
     const { name, value, type, checked } = e.target;
     setSelectedMovie({
@@ -207,6 +212,18 @@ function App() {
           <button className='btn btn-warning' onClick={() => openCloseEditModal()}>Cancel</button>
         </ModalFooter>
       </Modal>
+
+      {/* Delete Film Modal */}
+      <Modal isOpen={deleteModal}>
+        <ModalBody>
+          Are you sure you want to delete this movie? <b>{selectedMovie && selectedMovie.title}</b>
+        </ModalBody>
+
+        <ModalFooter>
+          <button className='btn btn-danger'>Delete</button>
+          <button className='btn btn-secondary'>Cancel</button>
+        </ModalFooter>
+      </Modal >
     </>
   )
 }
