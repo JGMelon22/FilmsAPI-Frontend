@@ -50,8 +50,9 @@ function App() {
   // Logic to call edit or delete modal window
   const selectMovie = (film, option) => {
     setSelectedMovie(film);
-    option === "Edit" &&
-      openCloseEditModal();
+    option === "Edit"
+      ? openCloseEditModal()
+      : openCloseDeleteModal();
   }
 
   // Get Data
@@ -60,7 +61,7 @@ function App() {
       .then(response => {
         setData(response.data.data) // Data.data
       }).catch(error => {
-        alert(error.get);
+        alert(error);
       })
   }
 
@@ -75,13 +76,13 @@ function App() {
         setData(data.concat(response.data));
         openCloseIncludeModal();
       }).catch(error => {
-        alert(error.get);
+        alert(error);
       })
   }
 
+  // Put Data
   const requestPut = async () => {
-    selectMovie.isInCinema = selectedMovie.isInCinema ? true : false; // Cast due to checkbox type
-
+    selectedMovie.isInCinema = selectedMovie.isInCinema ? true : false; // Cast due to checkbox type
     await axios.put(baseUrl, selectedMovie)
       .then(response => {
         var answer = response.data;
@@ -93,12 +94,22 @@ function App() {
             film.isInCinema = answer.isInCinema;
             film.releaseDate = answer.releaseDate;
           }
-
         });
         openCloseEditModal();
       }).catch(error => {
         alert(error)
       });
+  }
+
+  // Delete Data
+  const requestDelete = async () => {
+    await axios.delete(baseUrl + "/" + selectedMovie.movieId)
+      .then(response => {
+        setData(data.filter(movie => movie.movieId !== response.data));
+        openCloseDeleteModal();
+      }).catch(error => {
+        alert(error);
+      })
   }
 
   useEffect(() => {
@@ -220,8 +231,8 @@ function App() {
         </ModalBody>
 
         <ModalFooter>
-          <button className='btn btn-danger'>Delete</button>
-          <button className='btn btn-secondary'>Cancel</button>
+          <button className='btn btn-danger' onClick={() => requestDelete()}>Delete</button>
+          <button className='btn btn-secondary' onClick={openCloseDeleteModal}>Cancel</button>
         </ModalFooter>
       </Modal >
     </>
