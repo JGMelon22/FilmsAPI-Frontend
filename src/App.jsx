@@ -13,6 +13,9 @@ function App() {
   const [editModal, setEditModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
 
+  // Use state to help avoid infinity useEffect loop
+  const [updateData, setUpdateData] = useState(true);
+
   // Bind input user data from modal window
   const [selectedMovie, setSelectedMovie] = useState(
     {
@@ -74,6 +77,7 @@ function App() {
     await axios.post(baseUrl, selectedMovie)
       .then(response => {
         setData(data.concat(response.data));
+        setUpdateData(true);
         openCloseIncludeModal();
       }).catch(error => {
         alert(error);
@@ -83,7 +87,7 @@ function App() {
   // Put Data
   const requestPut = async () => {
     selectedMovie.isInCinema = selectedMovie.isInCinema ? true : false; // Cast due to checkbox type
-    await axios.put(baseUrl, selectedMovie)
+    await axios.put(baseUrl + "/" + selectedMovie.movieId, selectedMovie)
       .then(response => {
         var answer = response.data;
         var auxiliaryData = data;
@@ -95,6 +99,7 @@ function App() {
             film.releaseDate = answer.releaseDate;
           }
         });
+        setUpdateData(true);
         openCloseEditModal();
       }).catch(error => {
         alert(error)
@@ -106,15 +111,20 @@ function App() {
     await axios.delete(baseUrl + "/" + selectedMovie.movieId)
       .then(response => {
         setData(data.filter(movie => movie.movieId !== response.data));
+        setUpdateData(true);
         openCloseDeleteModal();
       }).catch(error => {
         alert(error);
       })
   }
 
+  // Fix infinity loop 
   useEffect(() => {
-    requestGet();
-  }, []);
+    if (updateData) {
+      requestGet();
+      setUpdateData(false);
+    }
+  }, [updateData]);
 
   return (
     <>
