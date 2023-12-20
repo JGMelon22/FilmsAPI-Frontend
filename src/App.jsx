@@ -220,7 +220,7 @@ function App() {
             <input type='text' className='form-control' name='title' onChange={handleChange} value={selectedMovie && selectedMovie.title} />
             <label>Is In Cinema?</label>
             <br />
-            <input type='checkbox' className='form-check-input' name='isInCinema' onChange={handleChange} value={selectedMovie && selectedMovie.isInCinema} />
+            <input type='checkbox' className='form-check-input' name='isInCinema' onChange={handleChange} checked={selectedMovie && selectedMovie.isInCinema} />
             <br />
             <label>Release Date:</label>
             <br />
